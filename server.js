@@ -1,21 +1,19 @@
 // Importa o Express, Body-Parser e FS
 const express = require('express');
-const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
 const fs = require('fs');
 
 const app = express();
 
-const PORT = 3000;
-const FILE = 'data.json';
+const PORT = process.env.PORT || 3000;
+const FILE = path.join(__dirname, 'data.json');
 
 // Permite receber JSON
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Libera acesso externo (CORS)
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+app.use(cors());
 
 // Função para ler arquivo
 function readNotes() {
@@ -95,5 +93,5 @@ app.delete('/api/notes/:id', (req, res) => {
 
 // Inicia servidor
 app.listen(PORT, () => {
-  console.log('Servidor rodando em http://localhost:3000');
+  console.log('Servidor rodando na porta ' + PORT);
 });
